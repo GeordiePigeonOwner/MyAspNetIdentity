@@ -21,6 +21,7 @@ namespace MyAspNetIdentity.Providers
 
             var allowedOrigin = "*";
 
+            //todo: what's this?
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();

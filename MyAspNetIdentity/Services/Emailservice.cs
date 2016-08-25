@@ -19,7 +19,6 @@ namespace MyAspNetIdentity.Services
             var apiKey = "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";
             dynamic sg = new SendGridAPIClient(apiKey);
 
-           
 
             Email from = new Email(message.Destination);
             string subject = message.Subject;

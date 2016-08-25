@@ -39,6 +39,7 @@ namespace MyAspNetIdentity.Providers
             {
                 if (expires != null)
                 {
+                    //todo: ccan we use this? do we need to. the unprotect
                     var token = new JwtSecurityToken(_issuer, audienceId, data.Identity.Claims, issued.Value.UtcDateTime, expires.Value.UtcDateTime, signingKey);
 
                     var handler = new JwtSecurityTokenHandler();

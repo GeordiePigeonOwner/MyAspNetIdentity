@@ -1,7 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
+using Microsoft.Owin;
+using Microsoft.Owin.Security.OAuth;
 using MyAspNetIdentity.Infrastructure;
+using MyAspNetIdentity.Providers;
 using Newtonsoft.Json.Serialization;
 using Owin;
 
@@ -30,8 +34,18 @@ namespace MyAspNetIdentity
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
-            // Plugin the OAuth bearer JSON Web Token tokens generation and Consumption will be here
+            OAuthAuthorizationServerOptions oAuthServerOptions = new OAuthAuthorizationServerOptions()
+            {
+                //For Dev enviroment only (on production should be AllowInsecureHttp = false)
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new PathString("/oauth/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                Provider = new CustomOAuthProvider(),
+                AccessTokenFormat = new CustomJwtFormat("http://localhost:59822")
+            };
 
+            // OAuth 2.0 Bearer Access Token Generation
+            app.UseOAuthAuthorizationServer(oAuthServerOptions);
         }
 
         private void ConfigureWebApi(HttpConfiguration config)
